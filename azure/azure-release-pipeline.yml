@@ -34,18 +34,17 @@ extends:
       - environment: internal-dev
         post_deploy:
           - template: ./templates/run-smoke-tests.yml
-      - environment: internal-qa
-        post_deploy:
-          - template: ./templates/run-smoke-tests.yml
-      - environment: internal-qa-sandbox
-        proxy_path: sandbox
-        post_deploy:
-          - template: ./templates/run-smoke-tests.yml
-    # (App subscription make sense for most sandbox implementations)
-      - environment: sandbox
-        proxy_path: sandbox
-        post_deploy:
-          - template: ./templates/run-smoke-tests.yml
+    #   - environment: internal-qa
+    #     post_deploy:
+    #       - template: ./templates/run-smoke-tests.yml
+    #   - environment: internal-qa-sandbox
+    #     proxy_path: sandbox
+    #     post_deploy:
+    #       - template: ./templates/run-smoke-tests.yml
+    #   - environment: sandbox
+    #     proxy_path: sandbox
+    #     post_deploy:
+    #       - template: ./templates/run-smoke-tests.yml
     # Enable int environment when ready by uncommenting:
     #   - environment: int
     #     depends_on:
