@@ -1,0 +1,21 @@
+# This is an OpenAPI Specification (https://swagger.io/specification/)
+# for splunk-monitor owned by NHS Digital (https://digital.nhs.uk/)
+openapi: '3.0.0'
+info:
+  title: 'splunk-monitor'
+  version: 'Computed and injected at build time by `scripts/set_version.py`'
+  description: |
+    ## Overview
+    Add a fully fledged description here with markdown syntax.
+  contact:
+    name: 'splunk-monitor API Support'
+    url: 'https://digital.nhs.uk/developer/help-and-support'
+    email: api.management@nhs.net
+servers:
+  - url: 'https://sandbox.api.service.nhs.uk/splunk-monitor'
+    description: Sandbox environment.
+  - url: 'https://int.api.service.nhs.uk/splunk-monitor'
+    description: Integration test environment.
+  - url: 'https://api.service.nhs.uk/splunk-monitor'
+    description: Production environment.
+paths: {}

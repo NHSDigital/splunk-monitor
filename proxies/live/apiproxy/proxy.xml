@@ -1,0 +1,4 @@
+<APIProxy name="sm">
+  <!-- This is the root of the application -->
+  <Description>"splunk-monitor"</Description>
+</APIProxy>

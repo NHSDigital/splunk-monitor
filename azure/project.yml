@@ -1,0 +1,4 @@
+variables:
+  service_name: splunk-monitor
+  short_service_name: sm
+  service_base_path: splunk-monitor
