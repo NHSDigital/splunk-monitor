@@ -37,6 +37,23 @@
       <Condition>(proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD"))
       </Condition>
     </Flow>
+    <Flow name="SplunkStatusMonitor">
+            <Request>
+                <Step>
+                    <Condition>request.header.apikey = null or private.common.status-endpoint-api-key != request.header.apikey</Condition>
+                    <Name>RaiseFault.401Unauthorized</Name>
+                </Step>
+                <Step>
+                    <Name>FlowCallout.LogToSplunk</Name>
+                </Step>
+            </Request>
+            <Response>
+                <Step>
+                    <Name>AssignMessage.HandleSplunkHec</Name>
+                </Step>
+            </Response>
+            <Condition>(proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")</Condition>
+        </Flow>
   </Flows>
   <PreFlow/>
   <PostClientFlow name="PostClientFlow">
@@ -50,18 +67,15 @@
     <BasePath>{{ SERVICE_BASE_PATH }}</BasePath>
     <VirtualHost>secure</VirtualHost>
   </HTTPProxyConnection>
-  <RouteRule name="NoRoute">
-    <Condition>(request.verb = "OPTIONS") and (request.header.origin != null) and (request.header.Access-Control-Request-Method != null)</Condition>
-  </RouteRule>
-  <RouteRule name="NoRoutePing">
-    <Condition>(proxy.pathsuffix MatchesPath "/_ping") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
-  </RouteRule>
-  <RouteRule name="NoRouteStatus">
-    <Condition>(proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
-  </RouteRule>
-  <RouteRule name="splunk-monitor-target">
-    <TargetEndpoint>splunk-monitor-target</TargetEndpoint>
-  </RouteRule>
+  <RouteRule name="NoRoute"/>
+  <FaultRules>
+    <FaultRule name="splunk error">
+      <Step>
+          <Name>AssignMessage.HandleSplunkHec</Name>
+      </Step>
+      <Condition>(proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")</Condition>
+    </FaultRule>
+  </FaultRules>
   <DefaultFaultRule>
     <Step>
       <Name>AssignMessage.Errors.CatchAllMessage</Name>
