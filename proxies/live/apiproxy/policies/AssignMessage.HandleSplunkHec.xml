@@ -5,8 +5,8 @@
     <Set>
         <Payload contentType="application/json" variablePrefix="%" variableSuffix="#">
             {
-                "code": "%splunkCalloutResponse.status.code#",
-                "content": "%splunkCalloutResponse.content#"
+                "status_code": "%splunkCalloutResponse.status.code#",
+                "content": %splunkCalloutResponse.content#
             }
         </Payload>
         <StatusCode>200</StatusCode>
