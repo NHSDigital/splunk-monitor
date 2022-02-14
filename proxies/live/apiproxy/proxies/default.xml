@@ -34,8 +34,7 @@
           <Name>AssignMessage.HandleSplunkHec</Name>
         </Step>
       </Response>
-      <Condition>((proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")) or
-                  ((proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD")))
+      <Condition>((proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")) or ((proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD")))
       </Condition>
     </Flow>
   </Flows>
@@ -65,8 +64,7 @@
       <Step>
           <Name>AssignMessage.HandleSplunkHec</Name>
       </Step>
-      <Condition>((proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")) or
-                  ((proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD")))
+      <Condition>((proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")) or ((proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD")))
       </Condition>
     </FaultRule>
   </FaultRules>
