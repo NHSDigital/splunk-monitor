@@ -19,41 +19,25 @@
       </Response>
       <Condition>(proxy.pathsuffix MatchesPath "/_ping") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
     </Flow>
-    <Flow name="StatusEndpoint">
+    <Flow name="SplunkStatusMonitor">
       <Request>
         <Step>
           <Condition>request.header.apikey = null or private.common.status-endpoint-api-key != request.header.apikey</Condition>
           <Name>RaiseFault.401Unauthorized</Name>
         </Step>
         <Step>
-          <Name>ServiceCallout.CallHealthcheckEndpoint</Name>
+          <Name>FlowCallout.LogToSplunk</Name>
         </Step>
       </Request>
       <Response>
         <Step>
-          <Name>javascript.SetStatusResponse</Name>
+          <Name>AssignMessage.HandleSplunkHec</Name>
         </Step>
       </Response>
-      <Condition>(proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD"))
+      <Condition>((proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")) or
+                  ((proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD")))
       </Condition>
     </Flow>
-    <Flow name="SplunkStatusMonitor">
-            <Request>
-                <Step>
-                    <Condition>request.header.apikey = null or private.common.status-endpoint-api-key != request.header.apikey</Condition>
-                    <Name>RaiseFault.401Unauthorized</Name>
-                </Step>
-                <Step>
-                    <Name>FlowCallout.LogToSplunk</Name>
-                </Step>
-            </Request>
-            <Response>
-                <Step>
-                    <Name>AssignMessage.HandleSplunkHec</Name>
-                </Step>
-            </Response>
-            <Condition>(proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")</Condition>
-        </Flow>
   </Flows>
   <PreFlow/>
   <PostClientFlow name="PostClientFlow">
@@ -77,11 +61,13 @@
     <Condition>(proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
   </RouteRule>
   <FaultRules>
-    <FaultRule name="splunk error">
+    <FaultRule name="SplunkError">
       <Step>
           <Name>AssignMessage.HandleSplunkHec</Name>
       </Step>
-      <Condition>(proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")</Condition>
+      <Condition>((proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")) or
+                  ((proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD")))
+      </Condition>
     </FaultRule>
   </FaultRules>
   <DefaultFaultRule>
