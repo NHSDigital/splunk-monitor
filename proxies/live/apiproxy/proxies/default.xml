@@ -60,17 +60,11 @@
     <Condition>(proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
   </RouteRule>
   <FaultRules>
-    <FaultRule name="AuthError">
-      <Step>
-        <Name>AssignMessage.OAuthPolicyErrorResponse</Name>
-      </Step>
-      <Condition>(RaiseFault.401Unauthorized.failed=true)</Condition>
-    </FaultRule>
     <FaultRule name="SplunkError">
       <Step>
         <Name>AssignMessage.HandleSplunkHec</Name>
       </Step>
-      <Condition>((proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")) or ((proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD")))
+      <Condition>(((proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")) or ((proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD")))) and (splunkCalloutResponse isNot null)
       </Condition>
     </FaultRule>
   </FaultRules>
