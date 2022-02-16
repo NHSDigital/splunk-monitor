@@ -20,6 +20,10 @@ async def is_401(resp: ClientResponse) -> bool:
     return resp.status == 401
 
 
+async def is_200(resp: ClientResponse) -> bool:
+    return resp.status == 200
+
+
 @pytest.mark.e2e
 @pytest.mark.smoketest
 def test_output_test_config(api_test_config: APITestSessionConfig):
@@ -65,11 +69,8 @@ async def test_wait_for_status(api_client: APISessionClient, api_test_config: AP
         test for _status ..  this uses poll_until to wait until the correct SOURCE_COMMIT_ID ( from env var )
         is available
     """
-
-    is_deployed = partial(_is_deployed, api_test_config=api_test_config)
-
     await poll_until(
         make_request=lambda: api_client.get('_status', headers={'apikey': env.status_endpoint_api_key()}),
-        until=is_deployed,
+        until=is_200,
         timeout=120
     )
