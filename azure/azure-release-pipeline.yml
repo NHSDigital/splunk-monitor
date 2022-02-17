@@ -34,6 +34,11 @@ extends:
       - environment: internal-dev
         post_deploy:
           - template: ./templates/run-smoke-tests.yml
+      - environment: prod
+        post_deploy:
+          - template: ./templates/run-smoke-tests.yml
+        depends_on:
+          - internal-dev
     #   - environment: internal-qa
     #     post_deploy:
     #       - template: ./templates/run-smoke-tests.yml
