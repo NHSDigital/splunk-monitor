@@ -25,7 +25,7 @@ apigee:
   - name: {{ ENV.name }}
     products:
       - name: {{ NAME }}
-        {% set approval_type = ENV.approval_type | default('auto') %}
+        approvalType: {{ ENV.approval_type | default('auto') }}
         attributes:
           - name: access
             value: public
