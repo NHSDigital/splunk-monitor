@@ -34,7 +34,7 @@
           <Name>javascript.SetStatusResponse</Name>
         </Step>
       </Response>
-      <Condition>((proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")) or ((proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD")))
+      <Condition>((proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET"))
       </Condition>
     </Flow>
   </Flows>
@@ -64,7 +64,7 @@
       <Step>
         <Name>javascript.SetStatusResponse</Name>
       </Step>
-      <Condition>(((proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")) or ((proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD")))) and (splunkCalloutResponse isNot null)
+      <Condition>((proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")) and (splunkCalloutResponse isNot null)
       </Condition>
     </FaultRule>
   </FaultRules>
