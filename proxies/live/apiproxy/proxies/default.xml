@@ -31,7 +31,7 @@
       </Request>
       <Response>
         <Step>
-          <Name>AssignMessage.HandleSplunkHec</Name>
+          <Name>javascript.SetStatusResponse</Name>
         </Step>
       </Response>
       <Condition>((proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")) or ((proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD")))
@@ -62,7 +62,7 @@
   <FaultRules>
     <FaultRule name="SplunkError">
       <Step>
-        <Name>AssignMessage.HandleSplunkHec</Name>
+        <Name>javascript.SetStatusResponse</Name>
       </Step>
       <Condition>(((proxy.pathsuffix MatchesPath "/status") and (request.verb = "GET")) or ((proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD")))) and (splunkCalloutResponse isNot null)
       </Condition>

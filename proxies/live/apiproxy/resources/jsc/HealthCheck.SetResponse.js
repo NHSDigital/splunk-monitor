@@ -1,8 +1,8 @@
 const apiproxy_revision = context.getVariable('apiproxy.revision');
 
-const healthcheck_status_code = context.getVariable('healthcheckResponse.status.code');
-const healthcheck_request_url = context.getVariable('healthcheckRequest.url');
-const healthcheck_failed = context.getVariable("servicecallout.ServiceCallout.CallHealthcheckEndpoint.failed");
+const healthcheck_status_code = context.getVariable('splunkCalloutResponse.status.code');
+const healthcheck_request_url = context.getVariable('splunkCalloutRequest.url');
+const healthcheck_failed = context.getVariable("servicecallout.ServiceCallout.LogToSplunk.failed");
 
 function json_tryparse(raw) {
     try {
@@ -13,7 +13,7 @@ function json_tryparse(raw) {
     }
 }
 
-const healthcheck_content = json_tryparse(context.getVariable('healthcheckResponse.content'));
+const healthcheck_content = json_tryparse(context.getVariable('splunkCalloutResponse.content'));
 const healthcheck_status = (healthcheck_status_code/100 === 2) ? "pass" : "fail";
 const timeout = (healthcheck_status_code === null && healthcheck_failed) ? "true" : "false";
 
@@ -39,3 +39,4 @@ const resp = {
 context.setVariable("status.response", JSON.stringify(resp));
 context.setVariable("response.content", JSON.stringify(resp));
 context.setVariable("response.header.Content-Type", "application/json");
+
