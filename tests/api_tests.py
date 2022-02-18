@@ -51,6 +51,7 @@ async def test_wait_for_ping(api_client: APISessionClient, api_test_config: APIT
 @pytest.mark.e2e
 @pytest.mark.smoketest
 @pytest.mark.asyncio
+@pytest.mark.skip(reason="There is no _status endpoint configured on this proxy.")
 async def test_check_status_is_secured(api_client: APISessionClient):
 
     await poll_until(
@@ -63,6 +64,7 @@ async def test_check_status_is_secured(api_client: APISessionClient):
 @pytest.mark.e2e
 @pytest.mark.smoketest
 @pytest.mark.asyncio
+@pytest.mark.skip(reason="There is no _status endpoint configured on this proxy.")
 async def test_wait_for_status(api_client: APISessionClient, api_test_config: APITestSessionConfig):
 
     """
