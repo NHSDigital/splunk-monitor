@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.SetResponse203">
+    <DisplayName>AssignMessage.SetResponse203</DisplayName>
+    <Properties/>
+    <Set>
+        <StatusCode>203</StatusCode>
+        <AssignTo createNew="false" transport="https" type="response"/>
+    </Set>
+</AssignMessage>
