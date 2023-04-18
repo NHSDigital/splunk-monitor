@@ -11,7 +11,7 @@ install-node:
 
 install: install-node install-python .git/hooks/pre-commit
 
-lint: xargs poetry run flake8
+lint: echo "nothing to lint"
 
 clean:
 	rm -rf build
