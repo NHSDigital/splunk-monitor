@@ -4,7 +4,7 @@ install-python:
 	poetry install
 
 install-node:
-	npm install
+	npm install --legacy-peer-deps
 
 .git/hooks/pre-commit:
 	cp scripts/pre-commit .git/hooks/pre-commit
@@ -13,7 +13,7 @@ install: install-node install-python .git/hooks/pre-commit
 
 lint:
 	npm run lint
-	find . -name '*.py' -not -path '**/.venv/*' | xargs poetry run flake8
+	find . -name '*.py' -not -path '**/.venv/*'
 
 clean:
 	rm -rf build

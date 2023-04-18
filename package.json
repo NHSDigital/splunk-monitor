@@ -3,9 +3,8 @@
   "version": "0.0.1",
   "description": "OAS (Swagger v3) API Definition for Template API",
   "scripts": {
-    "lint": "node_modules/.bin/speccy lint -s openapi-tags -s operation-tags specification/splunk-monitor.yaml --skip default-and-example-are-redundant",
-    "publish": "mkdir -p build && node_modules/.bin/speccy resolve specification/splunk-monitor.yaml -i | poetry run python scripts/yaml2json.py | poetry run python scripts/set_version.py > build/splunk-monitor.json",
-    "serve": "node_modules/.bin/speccy serve build/splunk-monitor.json",
+    "lint": "node_modules/.bin/openapi-generator-cli validate -i specification/splunk-monitor.yaml",
+    "publish": "./node_modules/.bin/openapi-generator-cli generate -i specification/splunk-monitor.yaml --generator-key v3.0 -g openapi -o build && rm openapitools.json && mv build/openapi.json build/splunk-monitor.json",
     "check-licenses": "node_modules/.bin/license-checker --failOn GPL --failOn LGPL"
   },
   "author": "NHS Digital",
@@ -16,6 +15,7 @@
     "speccy": "^0.11.0"
   },
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.6.0",
     "apigeetool": "^0.5.4",
     "license-checker": "^25.0.1",
     "minimist": "^1.2.2",

@@ -31,6 +31,9 @@
           <Name>AssignMessage.SetResponse203</Name>
         </Step>
         <Step>
+          <Name>FlowCallout.SetSplunkPayload</Name>
+        </Step>
+        <Step>
           <Name>FlowCallout.LogToSplunk</Name>
         </Step>
         <Step>
