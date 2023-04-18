@@ -11,7 +11,9 @@ install-node:
 
 install: install-node install-python .git/hooks/pre-commit
 
-lint: echo "nothing to lint"
+lint:
+	npm run lint
+	find . -name '*.py' -not -path '**/.venv/*' | xargs poetry run flake8
 
 clean:
 	rm -rf build
