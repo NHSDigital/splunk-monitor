@@ -5,7 +5,6 @@ install-python:
 
 install-node:
 	npm install --legacy-peer-deps
-	cd sandbox && npm install --legacy-peer-deps
 
 .git/hooks/pre-commit:
 	cp scripts/pre-commit .git/hooks/pre-commit
