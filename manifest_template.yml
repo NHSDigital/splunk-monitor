@@ -43,7 +43,9 @@ apigee:
         quota: {{ ENV.quota | default('300') }}
         quotaInterval: '1'
         quotaTimeUnit: minute
-    specs: []
+    specs:
+      - name: {{ NAME }}
+        path: {{ SERVICE_NAME }}.json
     api_catalog:
       - edgeAPIProductName: {{ NAME }}
         anonAllowed: true
