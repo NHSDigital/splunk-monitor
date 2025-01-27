@@ -1,5 +1,5 @@
 [project]
-python = "^3.8"
+python = "^3.11"
 
 [tool.poetry]
 name = "splunk-monitor"
@@ -16,7 +16,7 @@ keywords = ["healthcare", "uk", "nhs"] #TODO add additional keywords
 
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.11"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.7.9"
