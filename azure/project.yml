@@ -2,4 +2,4 @@ variables:
   service_name: splunk-monitor
   short_service_name: sm
   service_base_path: splunk-monitor
-  python_version: 3.9.5
+  python_version: 3.9
