@@ -72,14 +72,14 @@ Each API and team is unique. We encourage you to use a `test/` folder in the roo
 OpenAPI Generator does the lifting for the following npm scripts:
 
  * `lint` -- Lints the definition
- * `publish` -- Outputs the specification as a **single file** into the `dist/` directory
+ * `publish` -- Outputs the specification as a **single file** into the `build/` directory
 
 :bulb: The `publish` command is useful when uploading to Apigee which requires the spec as a single file.
 
 ### Caveats
 
 #### Swagger UI
-Swagger UI unfortunately doesn't correctly render `$ref`s in examples, so use `speccy serve` instead.
+Swagger UI unfortunately doesn't correctly render `$ref`s in examples, so use `openapi publish` instead.
 
 #### Apigee Portal
 The Apigee portal will not automatically pull examples from schemas, you must specify them manually.
