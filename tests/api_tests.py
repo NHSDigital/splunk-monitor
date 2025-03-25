@@ -1,78 +1,31 @@
-from functools import partial
+from os import getenv
 
 import pytest
-from aiohttp import ClientResponse
-from api_test_utils.api_session_client import APISessionClient
-from api_test_utils.api_test_session_config import APITestSessionConfig
-from api_test_utils import poll_until, env
-
-
-async def _is_deployed(resp: ClientResponse, api_test_config: APITestSessionConfig) -> bool:
-
-    if resp.status != 200:
-        return False
-    body = await resp.json()
-
-    return body.get("commitId") == api_test_config.commit_id
-
-
-async def is_401(resp: ClientResponse) -> bool:
-    return resp.status == 401
-
-
-async def is_200(resp: ClientResponse) -> bool:
-    return resp.status == 200
-
-
-@pytest.mark.e2e
-@pytest.mark.smoketest
-def test_output_test_config(api_test_config: APITestSessionConfig):
-    print(api_test_config)
+import requests
 
 
 @pytest.mark.e2e
 @pytest.mark.smoketest
 @pytest.mark.asyncio
-async def test_wait_for_ping(api_client: APISessionClient, api_test_config: APITestSessionConfig):
+async def test_wait_for_ping(nhsd_apim_proxy_url):
     """
-        test for _ping ..  this uses poll_until to wait until the correct SOURCE_COMMIT_ID ( from env var )
+        test for _ping, this waits until the correct SOURCE_COMMIT_ID ( from env var )
         is available
     """
+    retries = 0
+    resp = requests.get(f"{nhsd_apim_proxy_url}/_ping")
+    deployed_commit_id = resp.json().get("commitId")
 
-    is_deployed = partial(_is_deployed, api_test_config=api_test_config)
+    while (deployed_commit_id != getenv('SOURCE_COMMIT_ID')
+            and retries <= 30
+            and resp.status_code == 200):
+        resp = requests.get(f"{nhsd_apim_proxy_url}/_ping")
+        deployed_commit_id = resp.json().get("commitId")
+        retries += 1
 
-    await poll_until(
-        make_request=lambda: api_client.get('_ping'),
-        until=is_deployed,
-        timeout=120
-    )
+    if resp.status_code != 200:
+        pytest.fail(f"Status code {resp.status_code}, expecting 200")
+    elif retries >= 30:
+        pytest.fail("Timeout Error - max retries")
 
-
-@pytest.mark.e2e
-@pytest.mark.smoketest
-@pytest.mark.asyncio
-@pytest.mark.skip(reason="There is no _status endpoint configured on this proxy.")
-async def test_check_status_is_secured(api_client: APISessionClient):
-
-    await poll_until(
-        make_request=lambda: api_client.get('_status'),
-        until=is_401,
-        timeout=120
-    )
-
-
-@pytest.mark.e2e
-@pytest.mark.smoketest
-@pytest.mark.asyncio
-@pytest.mark.skip(reason="There is no _status endpoint configured on this proxy.")
-async def test_wait_for_status(api_client: APISessionClient, api_test_config: APITestSessionConfig):
-
-    """
-        test for _status ..  this uses poll_until to wait until the correct SOURCE_COMMIT_ID ( from env var )
-        is available
-    """
-    await poll_until(
-        make_request=lambda: api_client.get('_status', headers={'apikey': env.status_endpoint_api_key()}),
-        until=is_200,
-        timeout=120
-    )
+    assert deployed_commit_id == getenv('SOURCE_COMMIT_ID')

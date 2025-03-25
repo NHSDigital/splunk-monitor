@@ -45,10 +45,18 @@ release: clean publish build-proxy
 	mkdir -p dist
 	for f in $(_dist_include); do cp -r $$f dist; done
 
+TEST_CMD := @APIGEE_ACCESS_TOKEN=$(APIGEE_ACCESS_TOKEN) \
+		poetry run pytest -v \
+		--color=yes \
+		--api-name=splunk-monitor \
+		--proxy-name=$(PROXY_NAME) \
+		-s
+
 test:
-#	this target should be used for local unit tests ..  runs as part of the build pipeline
-	make --no-print-directory -C test
+	$(TEST_CMD) \
+	--junitxml=test-report.xml \
 
 smoketest:
-#	this target is for end to end smoketests this would be run 'post deploy' to verify an environment is working
-	poetry run pytest -v --junitxml=smoketest-report.xml -s -m smoketest
+	$(TEST_CMD) \
+	--junitxml=smoketest-report.xml \
+	-m smoketest
