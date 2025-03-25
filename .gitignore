@@ -1,4 +1,5 @@
 node_modules/
+
 bin/
 dist/
 build/
@@ -12,5 +13,6 @@ __pycache__/
 .envrc
 .idea/
 .venv/
+.direnv/
 
 smoketest-report.xml
