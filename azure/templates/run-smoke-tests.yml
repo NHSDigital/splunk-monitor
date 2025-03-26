@@ -14,10 +14,11 @@ steps:
       export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
       export SOURCE_COMMIT_ID="$(Build.SourceVersion)"
 
-      if [ ${{ parameters.production }} = "true" ]; then
+      if [ "${{ parameters.production }}" = "true" ]; then
         echo "Running smoketest-prod"
         make smoketest-prod
       else
+        echo "Running smoketest"
         make smoketest
       fi
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
