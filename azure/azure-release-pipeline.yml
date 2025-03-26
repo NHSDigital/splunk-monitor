@@ -39,6 +39,8 @@ extends:
       - environment: prod
         post_deploy:
           - template: ./templates/run-smoke-tests.yml
+            parameters:
+                production: true
         depends_on:
           - internal_dev
     #   - environment: internal-qa

@@ -1,3 +1,8 @@
+parameters:
+  - name: production
+    type: boolean
+    default: false
+
 steps:
   - bash: |
       make install-python
@@ -9,7 +14,11 @@ steps:
       export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
       export SOURCE_COMMIT_ID="$(Build.SourceVersion)"
 
-      make smoketest
+      if [ ${{ parameters.production }} = true ]; then
+        make smoketest-prod
+      else
+        make smoketest
+      fi
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: run smoketests
 

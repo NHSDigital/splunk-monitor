@@ -52,6 +52,9 @@ TEST_CMD := @APIGEE_ACCESS_TOKEN=$(APIGEE_ACCESS_TOKEN) \
 		--proxy-name=$(PROXY_NAME) \
 		-s
 
+PROD_TEST_CMD := $(TEST_CMD) \
+		--apigee-organization=nhsd-prod
+
 test:
 	$(TEST_CMD) \
 	--junitxml=test-report.xml \
@@ -60,3 +63,12 @@ smoketest:
 	$(TEST_CMD) \
 	--junitxml=smoketest-report.xml \
 	-m smoketest
+
+smoketest-prod:
+	$(PROD_TEST_CMD) \
+	--junitxml=smoketest-report.xml \
+	-m smoketest
+
+test-prod:
+	$(PROD_TEST_CMD) \
+	--junitxml=test-report.xml \
