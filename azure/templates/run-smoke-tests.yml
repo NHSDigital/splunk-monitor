@@ -6,20 +6,24 @@ parameters:
 steps:
   - bash: |
       make install-python
-
-      export PROXY_NAME="$(FULLY_QUALIFIED_SERVICE_NAME)"
-      export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
-      export SOURCE_COMMIT_ID="$(Build.SourceVersion)"
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: Setup pytests
 
   - bash: |
+      export PROXY_NAME="$(FULLY_QUALIFIED_SERVICE_NAME)"
+      export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
+      export SOURCE_COMMIT_ID="$(Build.SourceVersion)"
+
       make smoketest-prod
     condition: eq(${{ parameters.production }}, true)
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: Run smoketest-prod
 
   - bash: |
+      export PROXY_NAME="$(FULLY_QUALIFIED_SERVICE_NAME)"
+      export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
+      export SOURCE_COMMIT_ID="$(Build.SourceVersion)"
+
       make smoketest
     condition: ne(${{ parameters.production }}, true)
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
