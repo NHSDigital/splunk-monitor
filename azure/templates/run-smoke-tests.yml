@@ -15,6 +15,7 @@ steps:
       export SOURCE_COMMIT_ID="$(Build.SourceVersion)"
 
       if [ ${{ parameters.production }} = true ]; then
+        echo "Running smoketest-prod"
         make smoketest-prod
       else
         make smoketest
