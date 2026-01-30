@@ -36,11 +36,14 @@ extends:
       - environment: internal-dev
         post_deploy:
           - template: ./templates/run-smoke-tests.yml
+            parameters:
+                python_version: ${{ variables.python_version }}
       - environment: prod
         post_deploy:
           - template: ./templates/run-smoke-tests.yml
             parameters:
                 production: true
+                python_version: ${{ variables.python_version }}
         depends_on:
           - internal_dev
     #   - environment: internal-qa
